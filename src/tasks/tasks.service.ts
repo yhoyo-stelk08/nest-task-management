@@ -29,4 +29,10 @@ export class TasksService {
 
     return tasks;
   }
+
+  delete(id: string): Tasks {
+    const task = this.findOne(id);
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+    return task;
+  }
 }
