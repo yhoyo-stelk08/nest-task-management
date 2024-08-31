@@ -42,4 +42,22 @@ export class TasksService {
     task.status = updateTaskStatusDto.status;
     return task;
   }
+
+  findWithFilters(filterDto: any): Tasks[] {
+    const { status, search } = filterDto;
+    let tasks = this.findAll();
+
+    if (status) {
+      tasks = tasks.filter((task) => task.status === status);
+    }
+
+    if (search) {
+      tasks = tasks.filter(
+        (task) =>
+          task.title.includes(search) || task.description.includes(search),
+      );
+    }
+
+    return tasks;
+  }
 }
