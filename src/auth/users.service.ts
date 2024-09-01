@@ -24,6 +24,10 @@ export class UsersService {
     return await this.userRepository.findOneOrFail({ where: { id } });
   }
 
+  async findOneByUsername(username: string): Promise<User> {
+    return await this.userRepository.findOne({ where: { username } });
+  }
+
   async remove(id: string): Promise<User> {
     try {
       const user = await this.findOne(id);
