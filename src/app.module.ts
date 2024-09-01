@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TasksModule } from './tasks/tasks.module';
 import { AuthModule } from './auth/auth.module';
+import { TasksModule } from './tasks/tasks.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { AuthModule } from './auth/auth.module';
       username: 'yhoyo',
       password: 'Stelkers08&',
       database: 'nest_task_management',
-      autoLoadEntities: true,
+      entities: [__dirname + '/**/*.entity.{js,ts}'],
       synchronize: true,
     }),
     AuthModule,
