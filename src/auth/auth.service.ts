@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -30,6 +34,30 @@ export class AuthService {
       return newUser;
     } catch (error) {
       throw new BadRequestException(error.message);
+    }
+  }
+
+  async signIn(createUserDto: CreateUserDto) {
+    try {
+      const { username, password } = createUserDto;
+
+      // check if the user exist
+      const foundUser = await this.usersService.findOneByUsername(username);
+
+      if (!foundUser) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      // compare the password
+      const isMatch = await bcrypt.compare(password, foundUser.password);
+
+      if (!isMatch) {
+        throw new UnauthorizedException('Invalid credentials');
+      }
+
+      return foundUser;
+    } catch (error) {
+      throw new UnauthorizedException('Invalid credentials');
     }
   }
 }
